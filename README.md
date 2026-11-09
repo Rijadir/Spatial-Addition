@@ -2,7 +2,7 @@
 
 https://rijadir.github.io/Spatial-Addition/
 
-Spatial Addition is a browser-based visual-spatial ability test. Each item presents two 5 × 5 dot grids in sequence, then asks the user to recreate their spatial sum.
+Spatial Addition is a browser-based working memory test. Each item presents two 5 × 5 dot grids in sequence, then asks the user to recreate their spatial sum.
 
 ## Test rules
 
