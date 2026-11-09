@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A visual-spatial ability test using grid addition.">
+    <title>Spatial Addition Test</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="app-shell">
+        <section class="screen active" id="intro-screen">
+            <div class="brand-mark" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <p class="eyebrow">Visual-spatial ability</p>
+            <h1>Spatial<br><em>Addition</em></h1>
+
+            <section class="instructions">
+                <h2>How it works</h2>
+                <div class="instructions-content">
+                    <p>Two 5 × 5 grids appear sequentially. Recreate their sum in the answer grid.</p>
+                    <ul>
+                        <li><span class="dot dot-empty"></span> empty + empty = empty</li>
+                        <li><span class="dot dot-gray"></span> empty + gray = gray</li>
+                        <li><span class="dot dot-black"></span> gray + gray = black</li>
+                    </ul>
+                    <p>Click a cell once for gray, twice for black, and three times to clear it.</p>
+                </div>
+            </section>
+
+            <div class="test-facts">
+                <div><strong>18</strong><span>items</span></div>
+                <div><strong>2</strong><span>failures allowed</span></div>
+                <div><strong>5 seconds</strong><span>per pattern</span></div>
+            </div>
+
+            <form class="profile-form" id="profile-form">
+                <label for="nickname">Nickname <span>required</span></label>
+                <input id="nickname" name="nickname" type="text" maxlength="30" autocomplete="nickname" required>
+
+                <label for="age">Age <span>required</span></label>
+                <input id="age" name="age" type="number" min="1" max="120" inputmode="numeric" required>
+
+                <label for="iq-score">IQ score <span>optional</span></label>
+                <input id="iq-score" name="iq-score" type="number" min="40" max="160" inputmode="numeric">
+
+                <button class="primary-button" type="submit">Begin test <span>→</span></button>
+            </form>
+        </section>
+
+        <section class="screen" id="test-screen">
+            <header class="test-header">
+                <div>
+                    <p class="eyebrow">Spatial addition</p>
+                    <p class="item-label">Item <strong id="item-number">1</strong> <span>of 18</span></p>
+                </div>
+                <div class="progress-wrap">
+                    <span id="failure-count">0 failures</span>
+                    <div class="progress-track"><div class="progress-bar" id="progress-bar"></div></div>
+                </div>
+            </header>
+
+            <div class="phase-label" id="phase-label">Memorize grid 1</div>
+            <div class="grid-stage">
+                <div class="grid-panel" id="source-panel">
+                    <div class="grid" id="source-grid" aria-label="Pattern to memorize"></div>
+                </div>
+                <div class="grid-panel hidden-panel" id="second-panel">
+                    <div class="grid" id="second-grid" aria-label="Pattern to memorize"></div>
+                </div>
+                <div class="grid-panel answer-panel" id="answer-panel">
+                    <div class="grid" id="answer-grid" aria-label="Answer grid"></div>
+                </div>
+            </div>
+
+            <div class="test-footer">
+                <p class="helper-text" id="helper-text">Remember the positions of the gray dots.</p>
+                <button class="primary-button submit-button" id="submit-answer" type="button" disabled>Submit answer <span>→</span></button>
+            </div>
+        </section>
+
+        <section class="screen" id="result-screen">
+            <p>Test Completed</p>
+            <p>Score: <span id="final-score">0</span></p>
+            <p>Thank you for taking the test!</p>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
