@@ -13,6 +13,7 @@ Spatial Addition is a browser-based working memory test. Each item presents two 
 - The total number of source dots is the item number plus one.
 - Matching positions combine into a black dot.
 - Answer cells cycle through empty, gray, and black states with each click.
+- After the first failed answer, the current item is shown again with a different pair of source grids.
 - The test ends after two failures or after all 18 items are completed.
 - The score is the number of the last item passed.
 

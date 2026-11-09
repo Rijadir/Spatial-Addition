@@ -47,7 +47,12 @@ function randomPositions(count) {
     return positions.slice(0, count);
 }
 
-function createItem(itemNumberValue) {
+function samePositions(firstPositions, secondPositions) {
+    return firstPositions.length === secondPositions.length
+        && firstPositions.every((position) => secondPositions.includes(position));
+}
+
+function createItem(itemNumberValue, previousItem = null) {
     const totalDots = itemNumberValue + 1;
     const validFirstCounts = [];
 
@@ -57,32 +62,42 @@ function createItem(itemNumberValue) {
         }
     }
 
-    const firstGridCount = validFirstCounts[Math.floor(Math.random() * validFirstCounts.length)];
-    const secondGridCount = totalDots - firstGridCount;
-    const firstPositions = randomPositions(firstGridCount);
-    let secondPositions = randomPositions(secondGridCount);
+    let item;
 
-    while (
-        firstPositions.length === secondPositions.length
-        && firstPositions.every((position) => secondPositions.includes(position))
-    ) {
-        secondPositions = randomPositions(secondGridCount);
-    }
+    do {
+        const firstGridCount = validFirstCounts[Math.floor(Math.random() * validFirstCounts.length)];
+        const secondGridCount = totalDots - firstGridCount;
+        const firstPositions = randomPositions(firstGridCount);
+        let secondPositions = randomPositions(secondGridCount);
 
-    const expected = Array(GRID_SIZE).fill(0);
+        while (
+            firstPositions.length === secondPositions.length
+            && firstPositions.every((position) => secondPositions.includes(position))
+        ) {
+            secondPositions = randomPositions(secondGridCount);
+        }
 
-    firstPositions.forEach((position) => {
-        expected[position] += 1;
-    });
-    secondPositions.forEach((position) => {
-        expected[position] += 1;
-    });
+        const expected = Array(GRID_SIZE).fill(0);
 
-    return {
-        firstPositions,
-        secondPositions,
-        expected
-    };
+        firstPositions.forEach((position) => {
+            expected[position] += 1;
+        });
+        secondPositions.forEach((position) => {
+            expected[position] += 1;
+        });
+
+        item = {
+            firstPositions,
+            secondPositions,
+            expected
+        };
+    } while (
+        previousItem
+        && samePositions(item.firstPositions, previousItem.firstPositions)
+        && samePositions(item.secondPositions, previousItem.secondPositions)
+    );
+
+    return item;
 }
 
 function renderGrid(gridElement, positions, interactive = false) {
@@ -125,9 +140,9 @@ function showScreen(screen) {
     document.body.classList.toggle("test-mode", screen === testScreen);
 }
 
-function startItem() {
+function startItem(retry = false) {
     window.clearTimeout(phaseTimeout);
-    const item = createItem(currentItem);
+    const item = createItem(currentItem, retry ? currentItemData : null);
     currentItemData = item;
     currentExpected = item.expected;
     currentAnswer = Array(GRID_SIZE).fill(0);
@@ -215,6 +230,11 @@ function checkAnswer() {
         lastPassedItem = currentItem;
     } else {
         failures += 1;
+
+        if (failures < 2) {
+            startItem(true);
+            return;
+        }
     }
 
     if (failures >= 2 || currentItem >= TOTAL_ITEMS) {
